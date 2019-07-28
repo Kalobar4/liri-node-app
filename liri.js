@@ -5,10 +5,9 @@ var keys = require("./keys.js");
 var song = process.argv[3];
 var argument2 = process.argv[2];
 var queryString = process.argv.slice(3,10).join('+');
-console.log(queryString, '***************')
 var Spotify = require('node-spotify-api');
 var fs = require("fs");
-//  var spotify = new Spotify(keys.spotify);
+
 
 
 ///  MAIN FUNCTION FOR  UI: Command Line Interface Function   ///
@@ -40,12 +39,25 @@ function concertFunction() {
             console.log('Venue Name: ', response.data[0].venue.name);
             console.log('Venue City: ', response.data[0].venue.city);
             console.log('Concert Date: ', response.data[0].datetime);
+
+            var logObject = {
+                ArtistName: song,
+                VenueName : response.data[0].venue.name,
+                VenueCity : response.data[0].venue.city,
+                ConcertDate : response.data[0].datetime
+            }
+            var stringLog = JSON.stringify(logObject);
+            fs.appendFile("log.txt", stringLog, function(err) {
+                if (err) {return console.log(err);}
+                console.log("log.txt was updated with the new JSON string log!");
+              });
         })
         .catch(function (error) {
             console.log(error);
         })
         .finally(function () {
         });
+        
 };
 
 function spotifyFunction() {
@@ -63,6 +75,18 @@ function spotifyFunction() {
         console.log(data.tracks.items[0].name);
         console.log(data.tracks.items[0].album.href);
         console.log(data.tracks.items[0].album.name);
+
+        var logObject = {
+            Artist : data.tracks.items[0].artists[0].name,
+            Song : data.tracks.items[0].name,
+            Link : data.tracks.items[0].album.href,
+            Album : data.tracks.items[0].album.name
+        }
+        var stringLog = JSON.stringify(logObject);
+        fs.appendFile("log.txt", stringLog, function(err) {
+            if (err) {return console.log(err);}
+            console.log("log.txt was updated with the new JSON string log!");
+          });
     });
 
 };
@@ -81,6 +105,22 @@ function movieFunction() {
             console.log('Language: ', response.data.Language);
             console.log('Plot: ', response.data.Plot);
             console.log('Actors: ', response.data.Actors);
+
+            var logObject = {
+                Title : response.data.Title,
+                Year : response.data.Year,
+                IMDBRating : response.data.imdbRating,
+                RTRating : response.data.Ratings[0],
+                Country : response.data.Country,
+                Language : response.data.Language,
+                Plot : response.data.Plot,
+                Actors : response.data.Actors
+            }
+            var stringLog = JSON.stringify(logObject);
+            fs.appendFile("log.txt", stringLog, function(err) {
+                if (err) {return console.log(err);}
+                console.log("log.txt was updated with the new JSON string log!");
+              });
         })
         .catch(function (error) {
             console.log(error);
@@ -99,9 +139,22 @@ function randomFunction() {
         randomRequest = dataArr[0]
         randomSong = dataArr[1].replace(/['"]+/g, '')
         process.argv[3] = randomSong;
-
+        console.log(typeof dataArr[0])
+        console.log(typeof dataArr[1].replace(/['"]+/g, ''))
         console.log('Random request is: ', dataArr[0])
         console.log('Random song is : ', dataArr[1].replace(/['"]+/g, ''))
+
+        var logObject = {
+           RandomRequest: dataArr[0],
+           RandomSong : dataArr[1].replace(/['"]+/g, ''),
+        }
+        var stringLog = JSON.stringify(logObject);
+        fs.appendFile("log.txt", stringLog, function(err) {
+            if (err) {return console.log(err);}
+            console.log("log.txt was updated with the new JSON string log!");
+          });
+
+
         // userInput(randomRequest, randomSong);
         ///  in lieu of callback above ///
         spotify = new Spotify({
