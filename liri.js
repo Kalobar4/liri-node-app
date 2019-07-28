@@ -13,7 +13,7 @@ var fs = require("fs");
 ///  MAIN FUNCTION FOR  UI: Command Line Interface Function   ///
 function userInput(argument2, song) {
     switch (argument2) {
-        case "concert-this": concertFunction();
+        case "concert-this": concertFunction(song);
             break;
 
         case "spotify-this-song": spotifyFunction(song);
@@ -32,7 +32,7 @@ function userInput(argument2, song) {
 
 
 // Remote Server Calls & Callback functions 
-function concertFunction() {
+function concertFunction(song) {
     // console.log('concert-this', song);
     axios.get("https://rest.bandsintown.com/artists/" + song + "/events?app_id=codingbootcamp")
         .then(function (response) {
@@ -60,7 +60,7 @@ function concertFunction() {
         
 };
 
-function spotifyFunction() {
+function spotifyFunction(song) {
     if (!process.argv[3]) { song = 'TheSign' };
     spotify = new Spotify({
         id: process.env.SPOTIFY_ID,
@@ -91,7 +91,7 @@ function spotifyFunction() {
 
 };
 
-function movieFunction() {
+function movieFunction(song) {
     // console.log('movie-this', song);
     if (!process.argv[3]) { song = 'mr.nobody' };
     axios.get("http://www.omdbapi.com/?t=" + song + "&y=&plot=short&apikey=trilogy")
@@ -139,8 +139,6 @@ function randomFunction() {
         randomRequest = dataArr[0]
         randomSong = dataArr[1].replace(/['"]+/g, '')
         process.argv[3] = randomSong;
-        console.log(typeof dataArr[0])
-        console.log(typeof dataArr[1].replace(/['"]+/g, ''))
         console.log('Random request is: ', dataArr[0])
         console.log('Random song is : ', dataArr[1].replace(/['"]+/g, ''))
 
