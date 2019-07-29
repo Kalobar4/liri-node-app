@@ -141,6 +141,7 @@ function randomFunction() {
         process.argv[3] = randomSong;
         console.log('Random request is: ', dataArr[0])
         console.log('Random song is : ', dataArr[1].replace(/['"]+/g, ''))
+        userInput(randomRequest, randomSong);
 
         var logObject = {
            RandomRequest: dataArr[0],
@@ -151,23 +152,20 @@ function randomFunction() {
             if (err) {return console.log(err);}
             console.log("log.txt was updated with the new JSON string log!");
           });
-
-
-        // userInput(randomRequest, randomSong);
         ///  in lieu of callback above ///
-        spotify = new Spotify({
-            id: process.env.SPOTIFY_ID,
-            secret: process.env.SPOTIFY_SECRET
-        });
-        spotify.search({ type: 'track', query: randomSong }, function (err, data) {
-            if (err) {
-                return console.log('Error occurred: ' + err);
-            }
-            console.log(data.tracks.items[0].artists[0].name);
-            console.log(data.tracks.items[0].name);
-            console.log(data.tracks.items[0].album.href);
-            console.log(data.tracks.items[0].album.name);
-        });
+        // spotify = new Spotify({
+        //     id: process.env.SPOTIFY_ID,
+        //     secret: process.env.SPOTIFY_SECRET
+        // });
+        // spotify.search({ type: 'track', query: randomSong }, function (err, data) {
+        //     if (err) {
+        //         return console.log('Error occurred: ' + err);
+        //     }
+        //     console.log(data.tracks.items[0].artists[0].name);
+        //     console.log(data.tracks.items[0].name);
+        //     console.log(data.tracks.items[0].album.href);
+        //     console.log(data.tracks.items[0].album.name);
+        // });
 
     });
 };
